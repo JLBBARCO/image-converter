@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Imagens</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://kit.fontawesome.com/4a1e49a1ca.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <nav aria-label="Título">Conversor de Imagens</nav>
+        <nav><button><i class="fa-solid fa-moon"></i></button></nav>
+    </header>
+    <main>
+        <section id="conversor">
+            <h1>Conversor de Imagens</h1>
+            <form id="imageForm">
+                <label for="imageInput">Selecione uma imagem:</label>
+                <input type="file" id="imageInput" accept="image/*" required>
+                <label for="formatSelect">Escolha o formato de saída:</label>
+                <select id="formatSelect" required>
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPEG</option>
+                    <option value="webp">WEBP</option>
+                </select>
+                <small>Formatos suportados: PNG, JPEG, WEBP. (BMP removido por compatibilidade)</small>
+                <button type="submit">Converter</button>
+            </form>
+            <div id="result" style="display:none;">
+                <h2>Imagem Convertida:</h2>
+                <img id="convertedImage" alt="Imagem convertida" />
+                <p id="status" aria-live="polite"></p>
+                <a id="downloadLink" href="#" download>Baixar Imagem</a>
+            </div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

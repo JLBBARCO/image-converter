@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  color: #333;
+}
+
+p {
+  margin: 0 0 15px 0;
+  line-height: 1.6;
+  color: #666;
+}
+
+header {
+  background: #35424a;
+  color: #ffffff;
+  padding: 20px 25px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header nav a {
+  color: #ffffff;
+  margin: 0 15px;
+  font-size: 18px;
+}
+header nav a:hover {
+  text-decoration: underline;
+}
+
+header button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+main {
+  padding: 20px 25px 90px;
+}
+section {
+  margin-bottom: 30px;
+}
+section#conversor {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+section#conversor input[type="file"] {
+  display: block;
+  margin-bottom: 15px;
+}
+section#conversor button {
+  background: #3498db;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+section#conversor button:hover {
+  background: #2980b9;
+}
+#result {
+  display: none;
+  margin-top: 15px;
+}
+#convertedImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+#status {
+  margin-top: 8px;
+  color: #333;
+}
+section#conversor small {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-size: 0.9rem;
+}
+footer {
+  background: #35424a;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+footer p {
+  margin: 0;
+}
+footer a {
+  color: #ffffff;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+.dark-mode header {
+  background: #1f1f1f;
+}
+.dark-mode footer {
+  background: #1f1f1f;
+}
+.dark-mode section#conversor {
+  background: #1f1f1f;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+.dark-mode section#conversor button {
+  background: #bb86fc;
+}
+.dark-mode section#conversor button:hover {
+  background: #9b59b6;
+}
+.dark-mode a {
+  color: #bb86fc;
+}
+.dark-mode a:hover {
+  text-decoration: underline;
+}
+.dark-mode header button {
+  color: #bb86fc;
+}
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+  color: #888;
+}
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  border-color: #bb86fc;
+  outline: none;
+}
+.dark-mode #status {
+  color: #e0e0e0;
+}
+.dark-mode section#conversor small {
+  color: #ccc;
+}
