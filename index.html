@@ -11,8 +11,8 @@
 
 <body>
     <header>
-        <nav aria-label="Título">Conversor de Imagens</nav>
-        <nav><button><i class="fa-solid fa-moon"></i></button></nav>
+        <h2>Conversor de Imagens</h2>
+        <button aria-label="Alternar modo escuro"><i class="fa-solid fa-moon"></i></button>
     </header>
     <main>
         <section id="conversor">
@@ -29,15 +29,17 @@
                 <small>Formatos suportados: PNG, JPEG, WEBP. (BMP removido por compatibilidade)</small>
                 <button type="submit">Converter</button>
             </form>
-            <div id="result" style="display:none;">
-                <h2>Imagem Convertida:</h2>
-                <img id="convertedImage" alt="Imagem convertida" />
-                <p id="status" aria-live="polite"></p>
-                <a id="downloadLink" href="#" download>Baixar Imagem</a>
-            </div>
         </section>
     </main>
-    <footer></footer>
+    <aside id="result" style="display: none;">
+        <h2>Imagem Convertida:</h2>
+        <img id="convertedImage" alt="Imagem convertida" />
+        <p id="status" aria-live="polite"></p>
+        <a id="downloadLink" href="#" download>Baixar Imagem</a>
+    </aside>
+    <footer>
+        <p>Site desenvolvido por JLBBARCO - 2026</p>
+    </footer>
     <script src="assets/js/script.js"></script>
 </body>
 

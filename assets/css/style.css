@@ -1,10 +1,24 @@
 @charset "UTF-8";
 
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #f4f4f4;
+  --text-color: #333333;
+  --header-background: #35424a;
+  --footer-background: #35424a;
+  --button-background: #3498db;
+  --button-hover-background: #2980b9;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: var(--background-color);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr 1fr;
 }
 
 html {
@@ -19,7 +33,7 @@ html {
 }
 
 a {
-  color: #3498db;
+  color: var(--button-background);
   text-decoration: none;
 }
 a:hover {
@@ -34,32 +48,31 @@ h5,
 h6 {
   margin: 0 0 15px 0;
   font-weight: normal;
-  color: #333;
+  color: var(--text-color);
+  text-align: center;
 }
 
 p {
   margin: 0 0 15px 0;
   line-height: 1.6;
-  color: #666;
+  color: var(--text-color);
 }
 
 header {
-  background: #35424a;
+  background: var(--header-background);
   color: #ffffff;
   padding: 20px 25px;
   text-align: center;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  grid-column: 1 / -1;
 }
 
-header nav a {
+header h2 {
   color: #ffffff;
-  margin: 0 15px;
-  font-size: 18px;
-}
-header nav a:hover {
-  text-decoration: underline;
+  margin: 0;
+  font-size: 24px;
 }
 
 header button {
@@ -72,22 +85,29 @@ header button {
 
 main {
   padding: 20px 25px 90px;
+  grid-column: 1 / -1;
 }
+
 section {
   margin-bottom: 30px;
 }
+
 section#conversor {
-  background: #ffffff;
+  background: var(--background-color);
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+section#conversor form {
+  display: flex;
+  flex-direction: column;
 }
 section#conversor input[type="file"] {
   display: block;
   margin-bottom: 15px;
 }
 section#conversor button {
-  background: #3498db;
+  background: var(--button-background);
   color: #ffffff;
   border: none;
   padding: 10px 15px;
@@ -95,12 +115,20 @@ section#conversor button {
   border-radius: 3px;
 }
 section#conversor button:hover {
-  background: #2980b9;
+  background: var(--button-hover-background);
 }
+
 #result {
   display: none;
   margin-top: 15px;
+  padding: 25px;
+  background: var(--background-color);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  grid-column: 2;
+  grid-row: 2;
 }
+
 #convertedImage {
   max-width: 100%;
   height: auto;
@@ -108,18 +136,21 @@ section#conversor button:hover {
   margin-bottom: 10px;
   border-radius: 4px;
 }
+
 #status {
   margin-top: 8px;
-  color: #333;
+  color: var(--text-color);
 }
+
 section#conversor small {
   display: block;
   margin-top: 8px;
-  color: #666;
+  color: var(--text-color);
   font-size: 0.9rem;
 }
+
 footer {
-  background: #35424a;
+  background: var(--footer-background);
   color: #ffffff;
   text-align: center;
   padding: 10px 0;
@@ -182,9 +213,30 @@ footer a:hover {
   border-color: #bb86fc;
   outline: none;
 }
+.dark-mode #result {
+  background: #1f1f1f;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
 .dark-mode #status {
   color: #e0e0e0;
 }
 .dark-mode section#conversor small {
   color: #ccc;
+}
+
+@media (max-width: 990px) {
+  body {
+    grid-template-rows: auto 1fr 1fr auto;
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #result {
+    grid-column: 1;
+    grid-row: 3;
+  }
 }

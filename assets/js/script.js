@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       status.textContent = "Selecione uma imagem para converter.";
       return;
     }
+    if (submitBtn) submitBtn.disabled = true;
 
     const mimeMap = {
       png: "image/png",
@@ -134,6 +135,15 @@ document.addEventListener("DOMContentLoaded", function () {
     inputUrl = URL.createObjectURL(file);
     img.src = inputUrl;
     status.textContent = "Convertendo...";
+
+    const main = document.querySelector("main");
+    if (window.innerWidth >= 990) {
+      main.style.gridArea = "2 / 1 / -2 / 2";
+      result.style.gridArea = "2 / 2 / -1 / -1";
+    } else {
+      main.style.gridArea = "2 / 1 / -2 / -1";
+      result.style.gridArea = "3 / 1 / -1 / -1";
+    }
   });
 
   // Liberar URL de blobs depois do download
