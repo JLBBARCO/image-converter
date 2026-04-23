@@ -12,7 +12,9 @@ type CreateAppOptions =
   | { mode: "standalone"; server: Server }
   | { mode: "serverless" };
 
-export async function createApp(options: CreateAppOptions): Promise<ExpressApp> {
+export async function createApp(
+  options: CreateAppOptions
+): Promise<ExpressApp> {
   const app = express();
 
   // Support larger payloads for image upload/processing requests.

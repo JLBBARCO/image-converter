@@ -18,7 +18,9 @@ function isSecureRequest(req: Request) {
     ? forwardedProto
     : forwardedProto.split(",");
 
-  return protoList.some((proto: string) => proto.trim().toLowerCase() === "https");
+  return protoList.some(
+    (proto: string) => proto.trim().toLowerCase() === "https"
+  );
 }
 
 type SessionCookieOptions = {
@@ -29,9 +31,7 @@ type SessionCookieOptions = {
   domain?: string;
 };
 
-export function getSessionCookieOptions(
-  req: Request
-): SessionCookieOptions {
+export function getSessionCookieOptions(req: Request): SessionCookieOptions {
   // const hostname = req.hostname;
   // const shouldSetDomain =
   //   hostname &&
