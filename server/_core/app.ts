@@ -1,4 +1,4 @@
-import express, { type Express } from "express";
+import express from "express";
 import { type Server } from "http";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "../routers";
@@ -6,11 +6,13 @@ import { createContext } from "./context";
 import { registerOAuthRoutes } from "./oauth";
 import { serveStatic, setupVite } from "./vite";
 
+type ExpressApp = ReturnType<typeof express>;
+
 type CreateAppOptions =
   | { mode: "standalone"; server: Server }
   | { mode: "serverless" };
 
-export async function createApp(options: CreateAppOptions): Promise<Express> {
+export async function createApp(options: CreateAppOptions): Promise<ExpressApp> {
   const app = express();
 
   // Support larger payloads for image upload/processing requests.

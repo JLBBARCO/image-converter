@@ -18,12 +18,20 @@ function isSecureRequest(req: Request) {
     ? forwardedProto
     : forwardedProto.split(",");
 
-  return protoList.some(proto => proto.trim().toLowerCase() === "https");
+  return protoList.some((proto: string) => proto.trim().toLowerCase() === "https");
 }
+
+type SessionCookieOptions = {
+  httpOnly: boolean;
+  path: string;
+  sameSite: CookieOptions["sameSite"];
+  secure: boolean;
+  domain?: string;
+};
 
 export function getSessionCookieOptions(
   req: Request
-): Pick<CookieOptions, "domain" | "httpOnly" | "path" | "sameSite" | "secure"> {
+): SessionCookieOptions {
   // const hostname = req.hostname;
   // const shouldSetDomain =
   //   hostname &&
