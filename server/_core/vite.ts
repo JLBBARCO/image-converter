@@ -5,7 +5,6 @@ import express, {
 } from "express";
 import fs from "fs";
 import { type Server } from "http";
-import { nanoid } from "nanoid";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
@@ -24,11 +23,7 @@ export async function setupVite(app: Application, server: Server) {
     server: serverOptions,
     appType: "custom",
   });
-
-  app.use(vite.middlewares);
-  app.use("*", async (req: Request, res: Response, next: NextFunction) => {
-    const url = req.originalUrl;
-
+  const serveIndex = async (req: Request, res: Response) => {
     try {
       const clientTemplate = path.resolve(
         import.meta.dirname,
@@ -36,20 +31,28 @@ export async function setupVite(app: Application, server: Server) {
         "client",
         "index.html"
       );
-
-      // always reload the index.html file from disk incase it changes
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
-      template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
-      );
-      const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
-    } catch (e) {
-      vite.ssrFixStacktrace(e as Error);
-      next(e);
+      const template = await fs.promises.readFile(clientTemplate, "utf-8");
+      const html = await vite.transformIndexHtml(req.originalUrl, template);
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    } catch (error) {
+      console.error("Error serving index:", error);
+      res.status(500).end("Internal server error");
     }
-  });
+  };
+
+  app.get(/^\/(?:$|index\.html|converter|batch|documentation)$/, serveIndex);
+
+  // Serve Vite middleware for assets and modules (HMR, module resolution)
+  app.use(vite.middlewares);
+
+  // Optional request logging in dev to help diagnose routing
+  if (process.env.NODE_ENV === "development") {
+    app.use((req: Request, _res: Response, next: NextFunction) => {
+      // Log only navigation and asset requests to avoid noise
+      console.log(`[dev] ${req.method} ${req.originalUrl}`);
+      next();
+    });
+  }
 }
 
 export function serveStatic(app: Application) {

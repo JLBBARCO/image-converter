@@ -12,6 +12,11 @@ Simple image converter that runs in your browser
 
 4. Click **Convert** and then **Download Image** to save the converted file.
 
+## Development
+
+The Manus runtime is disabled in development by default to keep the Vite dev server stable.
+Set `MANUS_RUNTIME_ENABLED=true` if you want to enable it locally.
+
 **Notes**
 
 - The BMP option has been removed for browser compatibility reasons; supported formats are PNG, JPEG, and WEBP.

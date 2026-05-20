@@ -1,6 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "installCommand": "corepack pnpm install --frozen-lockfile",
+  "buildCommand": "corepack pnpm run build",
+  "devCommand": "corepack pnpm run dev",
   "outputDirectory": "dist/public",
   "routes": [
     {
@@ -8,11 +10,23 @@
       "dest": "/api/$1"
     },
     {
-      "handle": "filesystem"
+      "src": "/",
+      "dest": "/index.html"
     },
     {
-      "src": "/.*",
+      "src": "/converter",
       "dest": "/index.html"
+    },
+    {
+      "src": "/batch",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/documentation",
+      "dest": "/index.html"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }

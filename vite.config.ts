@@ -6,11 +6,27 @@ import path from "path";
 import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const enableManusRuntime =
+  process.env.MANUS_RUNTIME_ENABLED !== undefined
+    ? process.env.MANUS_RUNTIME_ENABLED === "true"
+    : false;
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  ...(isDevelopment ? [] : [jsxLocPlugin()]),
+  ...(enableManusRuntime ? [vitePluginManusRuntime()] : []),
+];
+
+const viteCacheDir = path.resolve(
+  process.env.LOCALAPPDATA ?? process.env.TEMP ?? import.meta.dirname,
+  "image-converter-vite-cache"
+);
 
 export default defineConfig({
   plugins,
+  cacheDir: viteCacheDir,
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

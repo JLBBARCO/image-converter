@@ -46,9 +46,10 @@ describe("Batch Processing Functionality", () => {
         "image/gif",
         "image/bmp",
         "image/tiff",
+        "image/svg+xml",
       ];
 
-      validTypes.forEach((type) => {
+      validTypes.forEach(type => {
         expect(type.startsWith("image/")).toBe(true);
       });
     });
@@ -56,9 +57,9 @@ describe("Batch Processing Functionality", () => {
 
   describe("Batch Conversion Logic", () => {
     it("should support all format options", () => {
-      const formats = ["png", "jpg", "webp", "gif", "bmp", "tiff"];
-      expect(formats).toHaveLength(6);
-      formats.forEach((format) => {
+      const formats = ["png", "jpg", "webp", "gif", "bmp", "tiff", "svg"];
+      expect(formats).toHaveLength(7);
+      formats.forEach(format => {
         expect(typeof format).toBe("string");
       });
     });
@@ -67,7 +68,7 @@ describe("Batch Processing Functionality", () => {
       let progress = 0;
       const steps = [0, 25, 50, 75, 100];
 
-      steps.forEach((step) => {
+      steps.forEach(step => {
         progress = step;
         expect(progress).toBeGreaterThanOrEqual(0);
         expect(progress).toBeLessThanOrEqual(100);
@@ -77,11 +78,7 @@ describe("Batch Processing Functionality", () => {
     });
 
     it("should calculate overall progress correctly", () => {
-      const images = [
-        { progress: 100 },
-        { progress: 50 },
-        { progress: 75 },
-      ];
+      const images = [{ progress: 100 }, { progress: 50 }, { progress: 75 }];
 
       const totalProgress = Math.round(
         images.reduce((sum, img) => sum + img.progress, 0) / images.length
@@ -137,7 +134,10 @@ describe("Batch Processing Functionality", () => {
         { totalImages: 10, successCount: 10 },
       ];
 
-      const totalSuccess = history.reduce((sum, item) => sum + item.successCount, 0);
+      const totalSuccess = history.reduce(
+        (sum, item) => sum + item.successCount,
+        0
+      );
       expect(totalSuccess).toBe(17);
     });
 
@@ -178,7 +178,9 @@ describe("Batch Processing Functionality", () => {
         const k = 1024;
         const sizes = ["B", "KB", "MB"];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+        return (
+          Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i]
+        );
       };
 
       expect(formatFileSize(0)).toBe("0 B");
@@ -192,7 +194,9 @@ describe("Batch Processing Functionality", () => {
         const k = 1024;
         const sizes = ["B", "KB", "MB"];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+        return (
+          Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i]
+        );
       };
 
       const result = formatFileSize(5242880); // 5 MB
@@ -209,13 +213,15 @@ describe("Batch Processing Functionality", () => {
     });
 
     it("should transition from converting to completed", () => {
-      let status: "pending" | "converting" | "completed" | "error" = "converting";
+      let status: "pending" | "converting" | "completed" | "error" =
+        "converting";
       status = "completed";
       expect(status).toBe("completed");
     });
 
     it("should transition to error state", () => {
-      let status: "pending" | "converting" | "completed" | "error" = "converting";
+      let status: "pending" | "converting" | "completed" | "error" =
+        "converting";
       status = "error";
       expect(status).toBe("error");
     });
@@ -228,7 +234,9 @@ describe("Batch Processing Functionality", () => {
         { status: "pending" },
       ];
 
-      const completedCount = images.filter((img) => img.status === "completed").length;
+      const completedCount = images.filter(
+        img => img.status === "completed"
+      ).length;
       expect(completedCount).toBe(2);
     });
 
@@ -240,7 +248,7 @@ describe("Batch Processing Functionality", () => {
         { status: "pending" },
       ];
 
-      const failedCount = images.filter((img) => img.status === "error").length;
+      const failedCount = images.filter(img => img.status === "error").length;
       expect(failedCount).toBe(2);
     });
   });
@@ -255,7 +263,7 @@ describe("Batch Processing Functionality", () => {
       ];
 
       const convertible = images.filter(
-        (img) => img.convertedBlob && img.status === "completed"
+        img => img.convertedBlob && img.status === "completed"
       );
       expect(convertible).toHaveLength(2);
     });
@@ -276,7 +284,7 @@ describe("Batch Processing Functionality", () => {
         { name: "image3.jpg", format: "gif" },
       ];
 
-      const downloads = images.map((img) => {
+      const downloads = images.map(img => {
         const nameWithoutExt = img.name.split(".")[0];
         return `${nameWithoutExt}.${img.format}`;
       });
@@ -330,20 +338,22 @@ describe("Batch Processing Functionality", () => {
     it("should have all format options available", () => {
       const formats = [
         { value: "png", label: "PNG", mimeType: "image/png" },
-        { value: "jpg", label: "JPG", mimeType: "image/jpeg" },
+        { value: "jpg", label: "JPEG", mimeType: "image/jpeg" },
         { value: "webp", label: "WEBP", mimeType: "image/webp" },
         { value: "gif", label: "GIF", mimeType: "image/gif" },
         { value: "bmp", label: "BMP", mimeType: "image/bmp" },
         { value: "tiff", label: "TIFF", mimeType: "image/tiff" },
+        { value: "svg", label: "SVG", mimeType: "image/svg+xml" },
       ];
 
-      expect(formats).toHaveLength(6);
+      expect(formats).toHaveLength(7);
       expect(formats[0].value).toBe("png");
       expect(formats[1].mimeType).toBe("image/jpeg");
     });
 
     it("should select format correctly", () => {
-      let selectedFormat: "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff" = "png";
+      let selectedFormat: "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff" =
+        "png";
       expect(selectedFormat).toBe("png");
 
       selectedFormat = "webp";
@@ -358,9 +368,9 @@ describe("Batch Processing Functionality", () => {
     });
 
     it("should not apply quality for other formats", () => {
-      const formats = ["png", "webp", "gif"];
+      const formats = ["png", "webp", "gif", "svg"];
 
-      formats.forEach((format) => {
+      formats.forEach(format => {
         const quality = format === "jpg" ? 0.95 : undefined;
         expect(quality).toBeUndefined();
       });

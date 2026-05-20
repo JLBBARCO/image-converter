@@ -1,11 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Upload, Download, Image as ImageIcon, RotateCcw, Clock } from "lucide-react";
+import {
+  Upload,
+  Download,
+  Image as ImageIcon,
+  RotateCcw,
+  Clock,
+} from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-type ConversionFormat = "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff";
+type ConversionFormat = "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff" | "svg";
 
 interface ConversionHistory {
   id: string;
@@ -16,14 +22,56 @@ interface ConversionHistory {
   convertedSize: number;
 }
 
-const FORMAT_OPTIONS: { value: ConversionFormat; label: string; mimeType: string }[] = [
+const FORMAT_OPTIONS: {
+  value: ConversionFormat;
+  label: string;
+  mimeType: string;
+}[] = [
   { value: "png", label: "PNG", mimeType: "image/png" },
-  { value: "jpg", label: "JPG", mimeType: "image/jpeg" },
+  { value: "jpg", label: "JPEG", mimeType: "image/jpeg" },
   { value: "webp", label: "WEBP", mimeType: "image/webp" },
   { value: "gif", label: "GIF", mimeType: "image/gif" },
   { value: "bmp", label: "BMP", mimeType: "image/bmp" },
   { value: "tiff", label: "TIFF", mimeType: "image/tiff" },
+  { value: "svg", label: "SVG", mimeType: "image/svg+xml" },
 ];
+
+const escapeSvgAttribute = (value: string) =>
+  value.replace(/[&<>"']/g, character => {
+    switch (character) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&apos;";
+      default:
+        return character;
+    }
+  });
+
+const createSvgBlob = (
+  source: string,
+  width: number,
+  height: number,
+  file: File
+) => {
+  if (file.type === "image/svg+xml") {
+    return file.slice(0, file.size, "image/svg+xml");
+  }
+
+  const escapedSource = escapeSvgAttribute(source);
+  const svgMarkup = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <image href="${escapedSource}" xlink:href="${escapedSource}" width="${width}" height="${height}" preserveAspectRatio="none" />
+</svg>`;
+
+  return new Blob([svgMarkup], { type: "image/svg+xml" });
+};
 
 export default function Converter() {
   const [originalImage, setOriginalImage] = useState<File | null>(null);
@@ -41,7 +89,12 @@ export default function Converter() {
     if (savedHistory) {
       try {
         const parsed = JSON.parse(savedHistory);
-        setHistory(parsed.map((item: any) => ({ ...item, timestamp: new Date(item.timestamp) })));
+        setHistory(
+          parsed.map((item: any) => ({
+            ...item,
+            timestamp: new Date(item.timestamp),
+          }))
+        );
       } catch (error) {
         console.error("Failed to load history:", error);
       }
@@ -61,7 +114,7 @@ export default function Converter() {
 
     setOriginalImage(file);
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       setOriginalPreview(e.target?.result as string);
       setConvertedPreview("");
     };
@@ -109,15 +162,40 @@ export default function Converter() {
 
         ctx.drawImage(img, 0, 0);
 
-        const format = FORMAT_OPTIONS.find((f) => f.value === selectedFormat);
+        const format = FORMAT_OPTIONS.find(f => f.value === selectedFormat);
         if (!format) {
           toast.error("Formato não suportado");
           setIsConverting(false);
           return;
         }
 
+        if (selectedFormat === "svg") {
+          const svgBlob = createSvgBlob(
+            originalPreview,
+            img.width,
+            img.height,
+            originalImage
+          );
+          const convertedUrl = URL.createObjectURL(svgBlob);
+          setConvertedPreview(convertedUrl);
+
+          const newHistoryItem: ConversionHistory = {
+            id: Math.random().toString(36).substr(2, 9),
+            originalName: originalImage.name,
+            format: selectedFormat,
+            timestamp: new Date(),
+            originalSize: originalImage.size,
+            convertedSize: svgBlob.size,
+          };
+          setHistory([newHistoryItem, ...history]);
+
+          toast.success("Imagem convertida com sucesso!");
+          setIsConverting(false);
+          return;
+        }
+
         canvas.toBlob(
-          (blob) => {
+          blob => {
             if (!blob) {
               toast.error("Erro ao converter imagem");
               setIsConverting(false);
@@ -199,7 +277,9 @@ export default function Converter() {
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 smooth-transition">
               <ImageIcon className="w-6 h-6 text-accent" />
-              <span className="text-lg font-semibold text-foreground">ImageConvert</span>
+              <span className="text-lg font-semibold text-foreground">
+                ImageConvert
+              </span>
             </div>
           </Link>
           <div className="flex items-center gap-4">
@@ -226,7 +306,8 @@ export default function Converter() {
               Conversor de Imagens
             </h1>
             <p className="text-lg text-muted-foreground">
-              Selecione uma imagem, escolha o formato e converta instantaneamente
+              Selecione uma imagem, escolha o formato e converta
+              instantaneamente
             </p>
           </div>
 
@@ -249,7 +330,7 @@ export default function Converter() {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={(e) => {
+                  onChange={e => {
                     if (e.target.files?.[0]) {
                       handleFileSelect(e.target.files[0]);
                     }
@@ -264,7 +345,7 @@ export default function Converter() {
                   ou clique para selecionar um arquivo
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  PNG, JPG, WEBP, GIF, BMP, TIFF
+                  PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG
                 </p>
               </div>
 
@@ -277,7 +358,7 @@ export default function Converter() {
                       Formato de Saída
                     </label>
                     <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                      {FORMAT_OPTIONS.map((format) => (
+                      {FORMAT_OPTIONS.map(format => (
                         <button
                           key={format.value}
                           onClick={() => setSelectedFormat(format.value)}
@@ -297,7 +378,9 @@ export default function Converter() {
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Original */}
                     <div className="p-6 rounded-2xl border border-border/40 bg-card/50">
-                      <h3 className="text-sm font-semibold text-foreground mb-4">Original</h3>
+                      <h3 className="text-sm font-semibold text-foreground mb-4">
+                        Original
+                      </h3>
                       <div className="bg-muted rounded-lg overflow-hidden mb-4">
                         <img
                           src={originalPreview}
@@ -306,7 +389,8 @@ export default function Converter() {
                         />
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {originalImage?.name} • {formatFileSize(originalImage?.size || 0)}
+                        {originalImage?.name} •{" "}
+                        {formatFileSize(originalImage?.size || 0)}
                       </p>
                     </div>
 
@@ -329,7 +413,9 @@ export default function Converter() {
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {convertedPreview ? "Pronto para download" : "Aguardando conversão"}
+                        {convertedPreview
+                          ? "Pronto para download"
+                          : "Aguardando conversão"}
                       </p>
                     </div>
                   </div>
@@ -373,7 +459,9 @@ export default function Converter() {
               <div className="p-6 rounded-2xl border border-border/40 bg-card/50 sticky top-24">
                 <div className="flex items-center gap-2 mb-6">
                   <Clock className="w-5 h-5 text-accent" />
-                  <h3 className="text-lg font-semibold text-foreground">Histórico</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Histórico
+                  </h3>
                 </div>
 
                 {history.length === 0 ? (
@@ -382,7 +470,7 @@ export default function Converter() {
                   </p>
                 ) : (
                   <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {history.map((item) => (
+                    {history.map(item => (
                       <div
                         key={item.id}
                         className="p-3 rounded-lg bg-muted/50 hover:bg-muted smooth-transition"

@@ -7,17 +7,25 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 
 describe("Image Converter Utilities", () => {
   describe("Format Validation", () => {
-    const SUPPORTED_FORMATS = ["png", "jpg", "webp", "gif", "bmp", "tiff"];
+    const SUPPORTED_FORMATS = [
+      "png",
+      "jpg",
+      "webp",
+      "gif",
+      "bmp",
+      "tiff",
+      "svg",
+    ];
 
     it("should validate supported image formats", () => {
-      SUPPORTED_FORMATS.forEach((format) => {
+      SUPPORTED_FORMATS.forEach(format => {
         expect(SUPPORTED_FORMATS).toContain(format);
       });
     });
 
     it("should reject unsupported formats", () => {
-      const unsupportedFormats = ["svg", "ico", "heic"];
-      unsupportedFormats.forEach((format) => {
+      const unsupportedFormats = ["ico", "heic"];
+      unsupportedFormats.forEach(format => {
         expect(SUPPORTED_FORMATS).not.toContain(format);
       });
     });
@@ -30,6 +38,7 @@ describe("Image Converter Utilities", () => {
         gif: "image/gif",
         bmp: "image/bmp",
         tiff: "image/tiff",
+        svg: "image/svg+xml",
       };
 
       Object.entries(mimeTypes).forEach(([format, mimeType]) => {
@@ -130,9 +139,10 @@ describe("Image Converter Utilities", () => {
         "image/gif",
         "image/bmp",
         "image/tiff",
+        "image/svg+xml",
       ];
 
-      validMimeTypes.forEach((mimeType) => {
+      validMimeTypes.forEach(mimeType => {
         expect(mimeType.startsWith("image/")).toBe(true);
       });
     });
@@ -145,7 +155,7 @@ describe("Image Converter Utilities", () => {
         "audio/mp3",
       ];
 
-      invalidMimeTypes.forEach((mimeType) => {
+      invalidMimeTypes.forEach(mimeType => {
         expect(mimeType.startsWith("image/")).toBe(false);
       });
     });
@@ -156,6 +166,7 @@ describe("Image Converter Utilities", () => {
         { name: "image.jpg", expected: "jpg" },
         { name: "picture.webp", expected: "webp" },
         { name: "animation.gif", expected: "gif" },
+        { name: "vector.svg", expected: "svg" },
       ];
 
       filenames.forEach(({ name, expected }) => {
@@ -188,6 +199,7 @@ describe("Image Converter Utilities", () => {
         gif: 1.0,
         bmp: 1.0,
         tiff: 1.0,
+        svg: 1.0,
       };
 
       expect(qualitySettings.jpg).toBeLessThan(1.0);
@@ -212,6 +224,7 @@ describe("Image Converter Utilities", () => {
         { original: "photo.png", format: "jpg", expected: "photo.jpg" },
         { original: "image.jpg", format: "webp", expected: "image.webp" },
         { original: "picture.webp", format: "png", expected: "picture.png" },
+        { original: "icon.png", format: "svg", expected: "icon.svg" },
       ];
 
       testCases.forEach(({ original, format, expected }) => {
@@ -247,7 +260,7 @@ describe("Image Converter Utilities", () => {
         "Canvas context is null",
       ];
 
-      errors.forEach((error) => {
+      errors.forEach(error => {
         expect(error).toBeTruthy();
         expect(typeof error).toBe("string");
       });

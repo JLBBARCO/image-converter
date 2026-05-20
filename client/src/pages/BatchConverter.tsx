@@ -16,7 +16,7 @@ import {
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-type ConversionFormat = "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff";
+type ConversionFormat = "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff" | "svg";
 
 interface ImageFile {
   id: string;
@@ -36,14 +36,56 @@ interface BatchHistory {
   successCount: number;
 }
 
-const FORMAT_OPTIONS: { value: ConversionFormat; label: string; mimeType: string }[] = [
+const FORMAT_OPTIONS: {
+  value: ConversionFormat;
+  label: string;
+  mimeType: string;
+}[] = [
   { value: "png", label: "PNG", mimeType: "image/png" },
-  { value: "jpg", label: "JPG", mimeType: "image/jpeg" },
+  { value: "jpg", label: "JPEG", mimeType: "image/jpeg" },
   { value: "webp", label: "WEBP", mimeType: "image/webp" },
   { value: "gif", label: "GIF", mimeType: "image/gif" },
   { value: "bmp", label: "BMP", mimeType: "image/bmp" },
   { value: "tiff", label: "TIFF", mimeType: "image/tiff" },
+  { value: "svg", label: "SVG", mimeType: "image/svg+xml" },
 ];
+
+const escapeSvgAttribute = (value: string) =>
+  value.replace(/[&<>"']/g, character => {
+    switch (character) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&apos;";
+      default:
+        return character;
+    }
+  });
+
+const createSvgBlob = (
+  source: string,
+  width: number,
+  height: number,
+  file: File
+) => {
+  if (file.type === "image/svg+xml") {
+    return file.slice(0, file.size, "image/svg+xml");
+  }
+
+  const escapedSource = escapeSvgAttribute(source);
+  const svgMarkup = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <image href="${escapedSource}" xlink:href="${escapedSource}" width="${width}" height="${height}" preserveAspectRatio="none" />
+</svg>`;
+
+  return new Blob([svgMarkup], { type: "image/svg+xml" });
+};
 
 export default function BatchConverter() {
   const [images, setImages] = useState<ImageFile[]>([]);
@@ -61,7 +103,10 @@ export default function BatchConverter() {
       try {
         const parsed = JSON.parse(savedHistory);
         setBatchHistory(
-          parsed.map((item: any) => ({ ...item, timestamp: new Date(item.timestamp) }))
+          parsed.map((item: any) => ({
+            ...item,
+            timestamp: new Date(item.timestamp),
+          }))
         );
       } catch (error) {
         console.error("Failed to load batch history:", error);
@@ -77,14 +122,14 @@ export default function BatchConverter() {
   const handleFileSelect = (files: FileList) => {
     const newImages: ImageFile[] = [];
 
-    Array.from(files).forEach((file) => {
+    Array.from(files).forEach(file => {
       if (!file.type.startsWith("image/")) {
         toast.error(`${file.name} não é uma imagem válida`);
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         const imageFile: ImageFile = {
           id: Math.random().toString(36).substr(2, 9),
           file,
@@ -92,7 +137,7 @@ export default function BatchConverter() {
           status: "pending",
           progress: 0,
         };
-        setImages((prev) => [...prev, imageFile]);
+        setImages(prev => [...prev, imageFile]);
       };
       reader.readAsDataURL(file);
     });
@@ -116,7 +161,7 @@ export default function BatchConverter() {
   };
 
   const convertImage = (imageFile: ImageFile): Promise<Blob | null> => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
@@ -131,14 +176,26 @@ export default function BatchConverter() {
 
         ctx.drawImage(img, 0, 0);
 
-        const format = FORMAT_OPTIONS.find((f) => f.value === selectedFormat);
+        const format = FORMAT_OPTIONS.find(f => f.value === selectedFormat);
         if (!format) {
           resolve(null);
           return;
         }
 
+        if (selectedFormat === "svg") {
+          resolve(
+            createSvgBlob(
+              imageFile.preview,
+              img.width,
+              img.height,
+              imageFile.file
+            )
+          );
+          return;
+        }
+
         canvas.toBlob(
-          (blob) => {
+          blob => {
             resolve(blob);
           },
           format.mimeType,
@@ -167,9 +224,11 @@ export default function BatchConverter() {
       const imageFile = images[i];
 
       // Update status to converting
-      setImages((prev) =>
-        prev.map((img) =>
-          img.id === imageFile.id ? { ...img, status: "converting", progress: 0 } : img
+      setImages(prev =>
+        prev.map(img =>
+          img.id === imageFile.id
+            ? { ...img, status: "converting", progress: 0 }
+            : img
         )
       );
 
@@ -178,25 +237,34 @@ export default function BatchConverter() {
 
         if (blob) {
           successCount++;
-          setImages((prev) =>
-            prev.map((img) =>
+          setImages(prev =>
+            prev.map(img =>
               img.id === imageFile.id
-                ? { ...img, status: "completed", progress: 100, convertedBlob: blob }
+                ? {
+                    ...img,
+                    status: "completed",
+                    progress: 100,
+                    convertedBlob: blob,
+                  }
                 : img
             )
           );
         } else {
-          setImages((prev) =>
-            prev.map((img) =>
+          setImages(prev =>
+            prev.map(img =>
               img.id === imageFile.id
-                ? { ...img, status: "error", error: "Falha ao converter imagem" }
+                ? {
+                    ...img,
+                    status: "error",
+                    error: "Falha ao converter imagem",
+                  }
                 : img
             )
           );
         }
       } catch (error) {
-        setImages((prev) =>
-          prev.map((img) =>
+        setImages(prev =>
+          prev.map(img =>
             img.id === imageFile.id
               ? { ...img, status: "error", error: "Erro durante conversão" }
               : img
@@ -206,10 +274,10 @@ export default function BatchConverter() {
 
       // Simulate progress
       for (let j = 0; j < 100; j += 10) {
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 10));
         if (j < 90) {
-          setImages((prev) =>
-            prev.map((img) =>
+          setImages(prev =>
+            prev.map(img =>
               img.id === imageFile.id ? { ...img, progress: j } : img
             )
           );
@@ -228,11 +296,15 @@ export default function BatchConverter() {
     setBatchHistory([historyItem, ...batchHistory]);
 
     setIsConverting(false);
-    toast.success(`${successCount} de ${images.length} imagens convertidas com sucesso!`);
+    toast.success(
+      `${successCount} de ${images.length} imagens convertidas com sucesso!`
+    );
   };
 
   const downloadAllImages = async () => {
-    const convertedImages = images.filter((img) => img.convertedBlob && img.status === "completed");
+    const convertedImages = images.filter(
+      img => img.convertedBlob && img.status === "completed"
+    );
 
     if (convertedImages.length === 0) {
       toast.error("Nenhuma imagem convertida para download");
@@ -240,7 +312,7 @@ export default function BatchConverter() {
     }
 
     // Download individual files
-    convertedImages.forEach((img) => {
+    convertedImages.forEach(img => {
       if (img.convertedBlob) {
         const link = document.createElement("a");
         const nameWithoutExt = img.file.name.split(".")[0];
@@ -256,7 +328,9 @@ export default function BatchConverter() {
   };
 
   const downloadAsZip = async () => {
-    const convertedImages = images.filter((img) => img.convertedBlob && img.status === "completed");
+    const convertedImages = images.filter(
+      img => img.convertedBlob && img.status === "completed"
+    );
 
     if (convertedImages.length === 0) {
       toast.error("Nenhuma imagem convertida para download");
@@ -272,7 +346,7 @@ export default function BatchConverter() {
         throw new Error("Falha ao criar pasta no ZIP");
       }
 
-      convertedImages.forEach((img) => {
+      convertedImages.forEach(img => {
         if (img.convertedBlob) {
           const nameWithoutExt = img.file.name.split(".")[0];
           const filename = `${nameWithoutExt}.${selectedFormat}`;
@@ -290,7 +364,9 @@ export default function BatchConverter() {
       link.click();
       document.body.removeChild(link);
 
-      toast.success(`ZIP com ${convertedImages.length} imagens baixado com sucesso!`);
+      toast.success(
+        `ZIP com ${convertedImages.length} imagens baixado com sucesso!`
+      );
     } catch (error) {
       console.error("Erro ao criar ZIP:", error);
       toast.error("Erro ao criar arquivo ZIP");
@@ -300,7 +376,7 @@ export default function BatchConverter() {
   };
 
   const removeImage = (id: string) => {
-    setImages((prev) => prev.filter((img) => img.id !== id));
+    setImages(prev => prev.filter(img => img.id !== id));
   };
 
   const clearAll = () => {
@@ -328,9 +404,12 @@ export default function BatchConverter() {
     }
   };
 
-  const totalProgress = images.length > 0
-    ? Math.round(images.reduce((sum, img) => sum + img.progress, 0) / images.length)
-    : 0;
+  const totalProgress =
+    images.length > 0
+      ? Math.round(
+          images.reduce((sum, img) => sum + img.progress, 0) / images.length
+        )
+      : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/30">
@@ -340,7 +419,9 @@ export default function BatchConverter() {
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 smooth-transition">
               <ImageIcon className="w-6 h-6 text-accent" />
-              <span className="text-lg font-semibold text-foreground">ImageConvert</span>
+              <span className="text-lg font-semibold text-foreground">
+                ImageConvert
+              </span>
             </div>
           </Link>
           <div className="flex items-center gap-4">
@@ -396,7 +477,7 @@ export default function BatchConverter() {
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => {
+                  onChange={e => {
                     if (e.target.files) {
                       handleFileSelect(e.target.files);
                     }
@@ -411,7 +492,7 @@ export default function BatchConverter() {
                   ou clique para selecionar vários arquivos
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  PNG, JPG, WEBP, GIF, BMP, TIFF
+                  PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG
                 </p>
               </div>
 
@@ -422,7 +503,7 @@ export default function BatchConverter() {
                     Formato de Saída
                   </label>
                   <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                    {FORMAT_OPTIONS.map((format) => (
+                    {FORMAT_OPTIONS.map(format => (
                       <button
                         key={format.value}
                         onClick={() => setSelectedFormat(format.value)}
@@ -444,8 +525,12 @@ export default function BatchConverter() {
               {images.length > 0 && isConverting && (
                 <div className="p-6 rounded-2xl border border-border/40 bg-card/50">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-semibold text-foreground">Progresso Geral</h3>
-                    <span className="text-sm font-semibold text-accent">{totalProgress}%</span>
+                    <h3 className="text-sm font-semibold text-foreground">
+                      Progresso Geral
+                    </h3>
+                    <span className="text-sm font-semibold text-accent">
+                      {totalProgress}%
+                    </span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div
@@ -461,7 +546,8 @@ export default function BatchConverter() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-foreground">
-                      {images.length} imagem{images.length !== 1 ? "s" : ""} selecionada{images.length !== 1 ? "s" : ""}
+                      {images.length} imagem{images.length !== 1 ? "s" : ""}{" "}
+                      selecionada{images.length !== 1 ? "s" : ""}
                     </h3>
                     <Button
                       onClick={clearAll}
@@ -476,7 +562,7 @@ export default function BatchConverter() {
                   </div>
 
                   <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {images.map((img) => (
+                    {images.map(img => (
                       <div
                         key={img.id}
                         className="p-4 rounded-xl border border-border/40 bg-muted/30"
@@ -506,13 +592,16 @@ export default function BatchConverter() {
                               </div>
                             )}
                             {img.status === "error" && (
-                              <p className="text-xs text-red-500">{img.error}</p>
-                            )}
-                            {img.status === "completed" && img.convertedBlob && (
-                              <p className="text-xs text-green-500">
-                                {formatFileSize(img.convertedBlob.size)}
+                              <p className="text-xs text-red-500">
+                                {img.error}
                               </p>
                             )}
+                            {img.status === "completed" &&
+                              img.convertedBlob && (
+                                <p className="text-xs text-green-500">
+                                  {formatFileSize(img.convertedBlob.size)}
+                                </p>
+                              )}
                           </div>
                           <Button
                             onClick={() => removeImage(img.id)}
@@ -542,7 +631,7 @@ export default function BatchConverter() {
                       {isConverting ? "Convertendo..." : "Iniciar Conversão"}
                     </Button>
                   </div>
-                  {images.some((img) => img.status === "completed") && (
+                  {images.some(img => img.status === "completed") && (
                     <div className="grid grid-cols-2 gap-4">
                       <Button
                         onClick={downloadAllImages}
@@ -575,7 +664,9 @@ export default function BatchConverter() {
               <div className="p-6 rounded-2xl border border-border/40 bg-card/50 sticky top-24">
                 <div className="flex items-center gap-2 mb-6">
                   <Clock className="w-5 h-5 text-accent" />
-                  <h3 className="text-lg font-semibold text-foreground">Histórico</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Histórico
+                  </h3>
                 </div>
 
                 {batchHistory.length === 0 ? (
@@ -584,13 +675,14 @@ export default function BatchConverter() {
                   </p>
                 ) : (
                   <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {batchHistory.map((item) => (
+                    {batchHistory.map(item => (
                       <div
                         key={item.id}
                         className="p-3 rounded-lg bg-muted/50 hover:bg-muted smooth-transition"
                       >
                         <p className="text-xs font-medium text-foreground">
-                          {item.totalImages} imagem{item.totalImages !== 1 ? "s" : ""}
+                          {item.totalImages} imagem
+                          {item.totalImages !== 1 ? "s" : ""}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
                           → {item.format.toUpperCase()}

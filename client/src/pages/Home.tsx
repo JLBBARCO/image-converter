@@ -11,7 +11,9 @@ export default function Home() {
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <Image className="w-6 h-6 text-accent" />
-            <span className="text-lg font-semibold text-foreground">ImageConvert</span>
+            <span className="text-lg font-semibold text-foreground">
+              ImageConvert
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/converter">
@@ -38,7 +40,9 @@ export default function Home() {
               <span className="block text-accent">com elegância</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Transforme suas imagens entre diferentes formatos de forma rápida, segura e totalmente no seu navegador. Sem upload para servidores, sem limites.
+              Transforme suas imagens entre diferentes formatos de forma rápida,
+              segura e totalmente no seu navegador. Sem upload para servidores,
+              sem limites.
             </p>
           </div>
 
@@ -66,9 +70,12 @@ export default function Home() {
             <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 smooth-transition">
               <Zap className="w-6 h-6 text-accent" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Processamento Local</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Processamento Local
+            </h3>
             <p className="text-muted-foreground">
-              Todas as conversões acontecem no seu navegador. Seus dados nunca deixam seu computador.
+              Todas as conversões acontecem no seu navegador. Seus dados nunca
+              deixam seu computador.
             </p>
           </div>
 
@@ -77,9 +84,12 @@ export default function Home() {
             <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 smooth-transition">
               <Layers className="w-6 h-6 text-accent" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Múltiplos Formatos</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Múltiplos Formatos
+            </h3>
             <p className="text-muted-foreground">
-              Converta entre PNG, JPG, WEBP, GIF, BMP e TIFF com qualidade preservada.
+              Converta entre PNG, JPEG, WEBP, GIF, BMP, TIFF e SVG com qualidade
+              preservada.
             </p>
           </div>
 
@@ -88,9 +98,12 @@ export default function Home() {
             <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 smooth-transition">
               <Image className="w-6 h-6 text-accent" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Preview em Tempo Real</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Preview em Tempo Real
+            </h3>
             <p className="text-muted-foreground">
-              Veja a imagem original e convertida lado a lado antes de fazer o download.
+              Veja a imagem original e convertida lado a lado antes de fazer o
+              download.
             </p>
           </div>
         </div>

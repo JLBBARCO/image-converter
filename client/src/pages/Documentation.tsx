@@ -12,7 +12,9 @@ export default function Documentation() {
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 smooth-transition">
               <ImageIcon className="w-6 h-6 text-accent" />
-              <span className="text-lg font-semibold text-foreground">ImageConvert</span>
+              <span className="text-lg font-semibold text-foreground">
+                ImageConvert
+              </span>
             </div>
           </Link>
           <div className="flex items-center gap-4">
@@ -53,78 +55,114 @@ export default function Documentation() {
           <section className="mb-12 p-8 rounded-2xl border border-border/40 bg-card/50">
             <div className="flex items-center gap-3 mb-6">
               <Code2 className="w-6 h-6 text-accent" />
-              <h2 className="text-2xl font-bold text-foreground">Stack Tecnológico</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Stack Tecnológico
+              </h2>
             </div>
             <p className="text-muted-foreground mb-6">
-              O ImageConvert foi construído com tecnologias modernas e de alto desempenho para garantir uma experiência elegante e responsiva.
+              O ImageConvert foi construído com tecnologias modernas e de alto
+              desempenho para garantir uma experiência elegante e responsiva.
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               {/* Frontend */}
               <div className="p-6 rounded-xl bg-muted/30 border border-border/40">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Frontend</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-4">
+                  Frontend
+                </h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>React 19</strong> - Framework UI moderno com hooks</span>
+                    <span>
+                      <strong>React 19</strong> - Framework UI moderno com hooks
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>TypeScript</strong> - Tipagem estática para segurança</span>
+                    <span>
+                      <strong>TypeScript</strong> - Tipagem estática para
+                      segurança
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Tailwind CSS 4</strong> - Estilização utilitária</span>
+                    <span>
+                      <strong>Tailwind CSS 4</strong> - Estilização utilitária
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>shadcn/ui</strong> - Componentes acessíveis</span>
+                    <span>
+                      <strong>shadcn/ui</strong> - Componentes acessíveis
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Wouter</strong> - Roteamento leve</span>
+                    <span>
+                      <strong>Wouter</strong> - Roteamento leve
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Sonner</strong> - Notificações elegantes</span>
+                    <span>
+                      <strong>Sonner</strong> - Notificações elegantes
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Lucide React</strong> - Ícones modernos</span>
+                    <span>
+                      <strong>Lucide React</strong> - Ícones modernos
+                    </span>
                   </li>
                 </ul>
               </div>
 
               {/* Backend & Ferramentas */}
               <div className="p-6 rounded-xl bg-muted/30 border border-border/40">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Backend & Ferramentas</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-4">
+                  Backend & Ferramentas
+                </h3>
                 <ul className="space-y-2 text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Express.js</strong> - Servidor web</span>
+                    <span>
+                      <strong>Express.js</strong> - Servidor web
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>tRPC</strong> - RPC type-safe</span>
+                    <span>
+                      <strong>tRPC</strong> - RPC type-safe
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Vite</strong> - Build tool moderno</span>
+                    <span>
+                      <strong>Vite</strong> - Build tool moderno
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Drizzle ORM</strong> - ORM type-safe</span>
+                    <span>
+                      <strong>Drizzle ORM</strong> - ORM type-safe
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Vitest</strong> - Framework de testes</span>
+                    <span>
+                      <strong>Vitest</strong> - Framework de testes
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>Node.js 22</strong> - Runtime JavaScript</span>
+                    <span>
+                      <strong>Node.js 22</strong> - Runtime JavaScript
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent font-bold">•</span>
-                    <span><strong>pnpm</strong> - Gerenciador de pacotes</span>
+                    <span>
+                      <strong>pnpm</strong> - Gerenciador de pacotes
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -135,7 +173,9 @@ export default function Documentation() {
           <section className="mb-12">
             <div className="flex items-center gap-3 mb-6">
               <Layers className="w-6 h-6 text-accent" />
-              <h2 className="text-2xl font-bold text-foreground">Funcionalidades Principais</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Funcionalidades Principais
+              </h2>
             </div>
 
             <div className="space-y-4">
@@ -145,7 +185,10 @@ export default function Documentation() {
                   Canvas API para Conversão
                 </h3>
                 <p className="text-muted-foreground">
-                  Utiliza a <strong>Canvas API</strong> do HTML5 para processar imagens diretamente no navegador. Suporta conversão entre múltiplos formatos (PNG, JPG, WEBP, GIF, BMP, TIFF) com controle de qualidade.
+                  Utiliza a <strong>Canvas API</strong> do HTML5 para processar
+                  imagens diretamente no navegador. Suporta conversão entre
+                  múltiplos formatos (PNG, JPEG, WEBP, GIF, BMP, TIFF e SVG) com
+                  controle de qualidade.
                 </p>
               </div>
 
@@ -155,7 +198,10 @@ export default function Documentation() {
                   Processamento Local
                 </h3>
                 <p className="text-muted-foreground">
-                  Todas as conversões acontecem localmente no navegador usando <strong>FileReader API</strong> e <strong>Blob API</strong>. Dados nunca são enviados para servidores, garantindo privacidade total.
+                  Todas as conversões acontecem localmente no navegador usando{" "}
+                  <strong>FileReader API</strong> e <strong>Blob API</strong>.
+                  Dados nunca são enviados para servidores, garantindo
+                  privacidade total.
                 </p>
               </div>
 
@@ -165,7 +211,10 @@ export default function Documentation() {
                   Drag & Drop e Upload
                 </h3>
                 <p className="text-muted-foreground">
-                  Interface intuitiva com suporte a <strong>Drag & Drop API</strong> e seleção tradicional de arquivos. Validação de tipos MIME para garantir que apenas imagens sejam processadas.
+                  Interface intuitiva com suporte a{" "}
+                  <strong>Drag & Drop API</strong> e seleção tradicional de
+                  arquivos. Validação de tipos MIME para garantir que apenas
+                  imagens sejam processadas.
                 </p>
               </div>
 
@@ -175,7 +224,10 @@ export default function Documentation() {
                   Histórico de Conversões
                 </h3>
                 <p className="text-muted-foreground">
-                  Utiliza <strong>localStorage API</strong> para manter histórico de conversões na sessão do usuário. Rastreia nome do arquivo, formato, tamanho original e convertido, com timestamps.
+                  Utiliza <strong>localStorage API</strong> para manter
+                  histórico de conversões na sessão do usuário. Rastreia nome do
+                  arquivo, formato, tamanho original e convertido, com
+                  timestamps.
                 </p>
               </div>
 
@@ -185,7 +237,9 @@ export default function Documentation() {
                   Preview em Tempo Real
                 </h3>
                 <p className="text-muted-foreground">
-                  Exibe imagem original e convertida lado a lado usando <strong>Object URLs</strong> para visualização eficiente. Permite comparação visual antes do download.
+                  Exibe imagem original e convertida lado a lado usando{" "}
+                  <strong>Object URLs</strong> para visualização eficiente.
+                  Permite comparação visual antes do download.
                 </p>
               </div>
 
@@ -195,7 +249,11 @@ export default function Documentation() {
                   Download Automático
                 </h3>
                 <p className="text-muted-foreground">
-                  Implementa download programático usando <strong>Blob URLs</strong> e elemento <strong>&lt;a&gt;</strong> com atributo <code>download</code>. Nomeia arquivo automaticamente com base no formato selecionado.
+                  Implementa download programático usando{" "}
+                  <strong>Blob URLs</strong> e elemento{" "}
+                  <strong>&lt;a&gt;</strong> com atributo <code>download</code>.
+                  Nomeia arquivo automaticamente com base no formato
+                  selecionado.
                 </p>
               </div>
             </div>
@@ -205,27 +263,51 @@ export default function Documentation() {
           <section className="mb-12">
             <div className="flex items-center gap-3 mb-6">
               <Zap className="w-6 h-6 text-accent" />
-              <h2 className="text-2xl font-bold text-foreground">APIs do Navegador Utilizadas</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                APIs do Navegador Utilizadas
+              </h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="p-6 rounded-xl bg-muted/30 border border-border/40">
-                <h3 className="font-semibold text-foreground mb-3">Processamento de Imagens</h3>
+                <h3 className="font-semibold text-foreground mb-3">
+                  Processamento de Imagens
+                </h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• <strong>Canvas API</strong> - Desenho e manipulação de imagens</li>
-                  <li>• <strong>Image API</strong> - Carregamento de imagens</li>
-                  <li>• <strong>Blob API</strong> - Criação de blobs de dados</li>
-                  <li>• <strong>FileReader API</strong> - Leitura de arquivos</li>
+                  <li>
+                    • <strong>Canvas API</strong> - Desenho e manipulação de
+                    imagens
+                  </li>
+                  <li>
+                    • <strong>Image API</strong> - Carregamento de imagens
+                  </li>
+                  <li>
+                    • <strong>Blob API</strong> - Criação de blobs de dados
+                  </li>
+                  <li>
+                    • <strong>FileReader API</strong> - Leitura de arquivos
+                  </li>
                 </ul>
               </div>
 
               <div className="p-6 rounded-xl bg-muted/30 border border-border/40">
-                <h3 className="font-semibold text-foreground mb-3">Interação do Usuário</h3>
+                <h3 className="font-semibold text-foreground mb-3">
+                  Interação do Usuário
+                </h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• <strong>Drag & Drop API</strong> - Upload por arrastar</li>
-                  <li>• <strong>File API</strong> - Acesso a arquivos</li>
-                  <li>• <strong>localStorage API</strong> - Persistência de dados</li>
-                  <li>• <strong>URL.createObjectURL()</strong> - Visualização de blobs</li>
+                  <li>
+                    • <strong>Drag & Drop API</strong> - Upload por arrastar
+                  </li>
+                  <li>
+                    • <strong>File API</strong> - Acesso a arquivos
+                  </li>
+                  <li>
+                    • <strong>localStorage API</strong> - Persistência de dados
+                  </li>
+                  <li>
+                    • <strong>URL.createObjectURL()</strong> - Visualização de
+                    blobs
+                  </li>
                 </ul>
               </div>
             </div>
@@ -233,49 +315,81 @@ export default function Documentation() {
 
           {/* Design & UX */}
           <section className="mb-12 p-8 rounded-2xl border border-border/40 bg-card/50">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Design & Experiência do Usuário</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">
+              Design & Experiência do Usuário
+            </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                <strong>Paleta de Cores:</strong> Tema claro elegante com cores em OKLCH (espaço de cor perceptualmente uniforme). Cores primárias em tons de azul/roxo para transmitir profissionalismo e confiança.
+                <strong>Paleta de Cores:</strong> Tema claro elegante com cores
+                em OKLCH (espaço de cor perceptualmente uniforme). Cores
+                primárias em tons de azul/roxo para transmitir profissionalismo
+                e confiança.
               </p>
               <p>
-                <strong>Tipografia:</strong> Fonte <strong>Inter</strong> para corpo de texto (legibilidade) e <strong>Playfair Display</strong> para títulos (elegância). Hierarquia visual clara com pesos de fonte variados.
+                <strong>Tipografia:</strong> Fonte <strong>Inter</strong> para
+                corpo de texto (legibilidade) e{" "}
+                <strong>Playfair Display</strong> para títulos (elegância).
+                Hierarquia visual clara com pesos de fonte variados.
               </p>
               <p>
-                <strong>Componentes:</strong> Utiliza biblioteca <strong>shadcn/ui</strong> que fornece componentes acessíveis, com suporte a teclado e leitores de tela. Todos os componentes seguem padrões WCAG.
+                <strong>Componentes:</strong> Utiliza biblioteca{" "}
+                <strong>shadcn/ui</strong> que fornece componentes acessíveis,
+                com suporte a teclado e leitores de tela. Todos os componentes
+                seguem padrões WCAG.
               </p>
               <p>
-                <strong>Animações:</strong> Transições suaves com Tailwind CSS para feedback visual. Efeitos hover em elementos interativos. Indicadores de carregamento durante conversão.
+                <strong>Animações:</strong> Transições suaves com Tailwind CSS
+                para feedback visual. Efeitos hover em elementos interativos.
+                Indicadores de carregamento durante conversão.
               </p>
               <p>
-                <strong>Responsividade:</strong> Design mobile-first com breakpoints em 640px (tablet) e 1024px (desktop). Layouts adaptáveis para todos os tamanhos de tela.
+                <strong>Responsividade:</strong> Design mobile-first com
+                breakpoints em 640px (tablet) e 1024px (desktop). Layouts
+                adaptáveis para todos os tamanhos de tela.
               </p>
             </div>
           </section>
 
           {/* Performance */}
           <section className="mb-12 p-8 rounded-2xl border border-border/40 bg-card/50">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Otimizações de Performance</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">
+              Otimizações de Performance
+            </h2>
             <ul className="space-y-3 text-muted-foreground">
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>
-                <span><strong>Processamento Local:</strong> Sem requisições de rede, conversão instantânea</span>
+                <span>
+                  <strong>Processamento Local:</strong> Sem requisições de rede,
+                  conversão instantânea
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>
-                <span><strong>Lazy Loading:</strong> Componentes carregados sob demanda</span>
+                <span>
+                  <strong>Lazy Loading:</strong> Componentes carregados sob
+                  demanda
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>
-                <span><strong>Code Splitting:</strong> Vite otimiza bundle size automaticamente</span>
+                <span>
+                  <strong>Code Splitting:</strong> Vite otimiza bundle size
+                  automaticamente
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>
-                <span><strong>CSS-in-JS Otimizado:</strong> Tailwind gera apenas CSS necessário</span>
+                <span>
+                  <strong>CSS-in-JS Otimizado:</strong> Tailwind gera apenas CSS
+                  necessário
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>
-                <span><strong>Object URLs:</strong> Visualização eficiente sem cópia de dados</span>
+                <span>
+                  <strong>Object URLs:</strong> Visualização eficiente sem cópia
+                  de dados
+                </span>
               </li>
             </ul>
           </section>
