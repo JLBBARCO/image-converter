@@ -141,6 +141,7 @@ reader.readAsDataURL(file);
 - GIF (image/gif) - Animações e sem perda
 - BMP (image/bmp) - Bitmap sem compressão
 - TIFF (image/tiff) - Formato profissional
+- ICO (image/x-icon) - Ícone com imagem PNG, limitado a 256×256 pixels
 
 **Implementação:**
 ```typescript
@@ -491,7 +492,7 @@ O **ImageConvert** é uma aplicação web moderna que demonstra as capacidades d
 **Diferenciais:**
 - ✓ Processamento 100% local no navegador
 - ✓ Interface elegante e responsiva
-- ✓ Suporte a 6 formatos de imagem
+- ✓ Suporte a 8 formatos de imagem
 - ✓ Histórico de conversões persistente
 - ✓ Testes abrangentes (23 testes)
 - ✓ Documentação técnica integrada

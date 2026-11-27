@@ -10,8 +10,17 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { createIcoBlob, getIcoDimensions } from "@/lib/ico";
 
-type ConversionFormat = "png" | "jpg" | "webp" | "gif" | "bmp" | "tiff" | "svg";
+type ConversionFormat =
+  | "png"
+  | "jpg"
+  | "webp"
+  | "gif"
+  | "bmp"
+  | "tiff"
+  | "svg"
+  | "ico";
 
 interface ConversionHistory {
   id: string;
@@ -34,6 +43,7 @@ const FORMAT_OPTIONS: {
   { value: "bmp", label: "BMP", mimeType: "image/bmp" },
   { value: "tiff", label: "TIFF", mimeType: "image/tiff" },
   { value: "svg", label: "SVG", mimeType: "image/svg+xml" },
+  { value: "ico", label: "ICO", mimeType: "image/png" },
 ];
 
 const escapeSvgAttribute = (value: string) =>
@@ -149,9 +159,13 @@ export default function Converter() {
     try {
       const img = new Image();
       img.onload = () => {
+        const dimensions =
+          selectedFormat === "ico"
+            ? getIcoDimensions(img.width, img.height)
+            : { width: img.width, height: img.height };
         const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
+        canvas.width = dimensions.width;
+        canvas.height = dimensions.height;
 
         const ctx = canvas.getContext("2d");
         if (!ctx) {
@@ -160,7 +174,7 @@ export default function Converter() {
           return;
         }
 
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         const format = FORMAT_OPTIONS.find(f => f.value === selectedFormat);
         if (!format) {
@@ -202,7 +216,11 @@ export default function Converter() {
               return;
             }
 
-            const convertedUrl = URL.createObjectURL(blob);
+            const convertedBlob =
+              selectedFormat === "ico"
+                ? createIcoBlob(blob, canvas.width, canvas.height)
+                : blob;
+            const convertedUrl = URL.createObjectURL(convertedBlob);
             setConvertedPreview(convertedUrl);
 
             // Add to history
@@ -212,7 +230,7 @@ export default function Converter() {
               format: selectedFormat,
               timestamp: new Date(),
               originalSize: originalImage.size,
-              convertedSize: blob.size,
+              convertedSize: convertedBlob.size,
             };
             setHistory([newHistoryItem, ...history]);
 
@@ -345,7 +363,7 @@ export default function Converter() {
                   ou clique para selecionar um arquivo
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG
+                  PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG, ICO
                 </p>
               </div>
 

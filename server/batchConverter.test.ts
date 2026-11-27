@@ -57,8 +57,17 @@ describe("Batch Processing Functionality", () => {
 
   describe("Batch Conversion Logic", () => {
     it("should support all format options", () => {
-      const formats = ["png", "jpg", "webp", "gif", "bmp", "tiff", "svg"];
-      expect(formats).toHaveLength(7);
+      const formats = [
+        "png",
+        "jpg",
+        "webp",
+        "gif",
+        "bmp",
+        "tiff",
+        "svg",
+        "ico",
+      ];
+      expect(formats).toHaveLength(8);
       formats.forEach(format => {
         expect(typeof format).toBe("string");
       });
@@ -344,9 +353,10 @@ describe("Batch Processing Functionality", () => {
         { value: "bmp", label: "BMP", mimeType: "image/bmp" },
         { value: "tiff", label: "TIFF", mimeType: "image/tiff" },
         { value: "svg", label: "SVG", mimeType: "image/svg+xml" },
+        { value: "ico", label: "ICO", mimeType: "image/png" },
       ];
 
-      expect(formats).toHaveLength(7);
+      expect(formats).toHaveLength(8);
       expect(formats[0].value).toBe("png");
       expect(formats[1].mimeType).toBe("image/jpeg");
     });

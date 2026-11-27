@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { createIcoBlob, getIcoDimensions } from "../client/src/lib/ico";
 
 /**
  * Testes para validar funcionalidades de conversão de imagens
@@ -15,6 +16,7 @@ describe("Image Converter Utilities", () => {
       "bmp",
       "tiff",
       "svg",
+      "ico",
     ];
 
     it("should validate supported image formats", () => {
@@ -24,7 +26,7 @@ describe("Image Converter Utilities", () => {
     });
 
     it("should reject unsupported formats", () => {
-      const unsupportedFormats = ["ico", "heic"];
+      const unsupportedFormats = ["heic"];
       unsupportedFormats.forEach(format => {
         expect(SUPPORTED_FORMATS).not.toContain(format);
       });
@@ -39,11 +41,41 @@ describe("Image Converter Utilities", () => {
         bmp: "image/bmp",
         tiff: "image/tiff",
         svg: "image/svg+xml",
+        ico: "image/x-icon",
       };
 
       Object.entries(mimeTypes).forEach(([format, mimeType]) => {
         expect(mimeType).toMatch(/^image\//);
       });
+    });
+  });
+
+  describe("ICO Conversion", () => {
+    it("should create a valid ICO header for an embedded PNG", async () => {
+      const png = new Blob(["png-data"], { type: "image/png" });
+      const ico = createIcoBlob(png, 32, 24);
+      const view = new DataView(await ico.slice(0, 22).arrayBuffer());
+
+      expect(ico.type).toBe("image/x-icon");
+      expect(ico.size).toBe(22 + png.size);
+      expect(view.getUint16(2, true)).toBe(1);
+      expect(view.getUint16(4, true)).toBe(1);
+      expect(view.getUint8(6)).toBe(32);
+      expect(view.getUint8(7)).toBe(24);
+      expect(view.getUint32(14, true)).toBe(png.size);
+      expect(view.getUint32(18, true)).toBe(22);
+
+      const maxSizeIco = createIcoBlob(png, 256, 256);
+      const maxSizeView = new DataView(
+        await maxSizeIco.slice(0, 22).arrayBuffer()
+      );
+      expect(maxSizeView.getUint8(6)).toBe(0);
+      expect(maxSizeView.getUint8(7)).toBe(0);
+    });
+
+    it("should constrain icon dimensions to 256 pixels without changing aspect ratio", () => {
+      expect(getIcoDimensions(512, 256)).toEqual({ width: 256, height: 128 });
+      expect(getIcoDimensions(32, 64)).toEqual({ width: 32, height: 64 });
     });
   });
 

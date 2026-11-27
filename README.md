@@ -8,7 +8,7 @@ Simple image converter that runs in your browser
 
 2. Select an image using the **"Select an image"** field.
 
-3. Choose the output format (PNG, JPEG, or WEBP).
+3. Choose the output format (PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG, or ICO).
 
 4. Click **Convert** and then **Download Image** to save the converted file.
 
@@ -22,5 +22,6 @@ Set `MANUS_RUNTIME_ENABLED=true` if you want to enable it locally.
 - The BMP option has been removed for browser compatibility reasons; supported formats are PNG, JPEG, and WEBP.
 
 - The conversion is done entirely on the client using a `canvas` element; no image is sent to servers.
+- ICO files contain a PNG image and are resized to fit within 256×256 pixels.
 
 - If the chosen format is not supported by the browser, the converter attempts to generate a PNG as a fallback.

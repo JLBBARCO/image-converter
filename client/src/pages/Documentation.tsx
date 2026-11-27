@@ -187,8 +187,9 @@ export default function Documentation() {
                 <p className="text-muted-foreground">
                   Utiliza a <strong>Canvas API</strong> do HTML5 para processar
                   imagens diretamente no navegador. Suporta conversão entre
-                  múltiplos formatos (PNG, JPEG, WEBP, GIF, BMP, TIFF e SVG) com
-                  controle de qualidade.
+                  múltiplos formatos (PNG, JPEG, WEBP, GIF, BMP, TIFF, SVG e
+                  ICO) com controle de qualidade. Arquivos ICO são limitados
+                  a 256×256 pixels.
                 </p>
               </div>
 
